@@ -1,0 +1,79 @@
+/*
+Print concentric rectangular pattern in a 2d matrix. 
+Let us show you some examples to clarify what we mean.
+
+Example 1:
+
+Input: A = 4.
+Output:
+
+4 4 4 4 4 4 4 
+4 3 3 3 3 3 4 
+4 3 2 2 2 3 4 
+4 3 2 1 2 3 4 
+4 3 2 2 2 3 4 
+4 3 3 3 3 3 4 
+4 4 4 4 4 4 4 
+Example 2:
+
+Input: A = 3.
+Output:
+
+3 3 3 3 3 
+3 2 2 2 3 
+3 2 1 2 3 
+3 2 2 2 3 
+3 3 3 3 3 
+The outermost rectangle is formed by A, then the next outermost is formed by A-1 and so on.
+
+You will be given A as an argument to the function you need to implement, and you need to return a 2D array.
+*/
+
+public class Solution {
+	public ArrayList<ArrayList<Integer>> prettyPrint(int a) {
+	    ArrayList<ArrayList<Integer>> res = new ArrayList<>();
+	    
+	    if (a < 1) {
+	        return res;
+	    }
+	    
+	    int len = a * 2 - 1;
+	    
+	    // init
+	    for (int i = 0; i < len; i++) {
+	        res.add(new ArrayList<Integer>());
+	        
+	        for (int j = 0; j < len; j++) {
+	            res.get(i).add(0);
+	        }
+	    }
+	    
+	    // fill
+	    fill(res, 0, len, a);
+	    
+	    return res;
+	}
+	
+	public void fill(ArrayList<ArrayList<Integer>> res, int left, int len, int a) {
+	    if (a == 1) {
+	        res.get(left).set(left, 1);
+	        return;
+	    }
+	    
+	    for (int i = 0; i < len - 1; i++) {
+	        int right = len + left - 1;
+	        int frontPos = left + i;
+	        int backPos = right - i;
+	        // top
+	        res.get(left).set(frontPos, a);
+	        // right
+	        res.get(frontPos).set(right, a);
+	        // bot
+	        res.get(right).set(backPos, a);
+	        // left
+	        res.get(backPos).set(left, a);
+	    }
+	    
+	    fill(res, left + 1, len - 2, a - 1);
+	}
+}
