@@ -1,0 +1,52 @@
+/*
+Given a collection of numbers that might contain duplicates, return all possible unique permutations.
+
+Example :
+[1,1,2] have the following unique permutations:
+
+[1,1,2]
+[1,2,1]
+[2,1,1]
+ NOTE : No 2 entries in the permutation sequence should be the same. 
+ Warning : DO NOT USE LIBRARY FUNCTION FOR GENERATING PERMUTATIONS. Example : next_permutations in C++ / itertools.permutations in python.
+If you do, we will disqualify your submission retroactively and give you penalty points. 
+*/
+
+public class Solution {
+	public ArrayList<ArrayList<Integer>> permute(ArrayList<Integer> a) {
+	    ArrayList<ArrayList<Integer>> res = new ArrayList<>();
+	    
+	    if (a == null || a.size() == 0) {
+	        return res;
+	    }
+	    
+	    recursion(a, 0, res);
+	    
+	    return res;
+	}
+	
+	public void recursion(ArrayList<Integer> a, int pos, ArrayList<ArrayList<Integer>> res) {
+	    if (pos == a.size()) {
+	        res.add(new ArrayList<Integer> (a));
+	        return;
+	    }
+	    
+	    Set<Integer> set = new HashSet<>();
+	    
+	    for (int i = pos; i < a.size(); i++) {
+	        if (set.add(a.get(i))) {
+	            swap(a, i, pos);
+	            
+	            recursion(a, pos + 1, res);
+	            
+	            swap(a, i, pos);
+	        }
+	    }
+	}
+	
+	public void swap(ArrayList<Integer> a, int i, int j) {
+	    int temp = a.get(i);
+	    a.set(i, a.get(j));
+	    a.set(j, temp);
+	}
+}
